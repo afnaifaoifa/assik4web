@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #007BFF;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #343a40;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #343a40;
+        }
+
+        table {
+            width: 80%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: scroll;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .edit-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .edit-input {
+            margin-right: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .checkbox-label {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            margin-left: 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+            width: 100%;
+        }
+
+
+        .add-user-btn {
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-checkbox {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .close-btn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .search{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/main" class="text-white">Main</a>
+        <a href="/exercises" class="text-white">Exercise</a>
+        <a href="/items-add-page" class="text-white">Create Items</a>
+        <a href="/items-for-admin" class="text-white">Items</a>
+        <form action="/admin" method="get" class="search">
+            <label for="username">Search by username</label>
+            <input type="text" id="username" name="username" />
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+    </script>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </nav>
+</header>
+
+<h2>Users Table</h2>
+
+<button class="add-user-btn" onclick="showAddUserModal()">Add User</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>isAdmin</th>
+        <th>Password</th>
+        <th>Created Date</th>
+        <th>Last Updated Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(user => { %>
+        <tr>
+            <td id="<%= 'username' + user._id %>"><%= user.username %></td>
+            <td><%= user.isAdmin ? 'Yes' : 'No' %></td>
+            <td id="<%= 'password' + user._id %>"><%= user.password %></td>
+            <td><%= new Date(user.updatedAt).toLocaleDateString() %></td>
+            <td><%= new Date(user.updatedAt).toLocaleDateString() %></td>
+            <td class="edit-actions">
+                <input id="<%= 'username-' + user._id %>" class="edit-input" type="text"
+                       placeholder="New Username">
+                <input id="<%= 'password-' + user._id %>" class="edit-input" type="password" placeholder="New Password">
+                <label class="checkbox-label">
+                    <input id="<%= 'isAdmin-' + user._id %>" type="checkbox" class="edit-checkbox"> isAdmin
+                </label>
+                <button class="edit-btn" onclick="updateUser('<%= user._id %>')">Update</button>
+                <button class="delete-btn" onclick="deleteUser('<%= user._id %>')">Delete</button>
+            </td>
+        </tr>
+    <% }); %>
+    </tbody>
+</table>
+
+<div id="addUserModal" class="modal">
+    <div class="modal-content">
+        <h2>Add New User</h2>
+        <label for="newUsername" class="form-label">Username:</label>
+        <input type="text" id="newUsername" class="form-input" placeholder="Enter username">
+
+        <label for="newPassword" class="form-label">Password:</label>
+        <input type="password" id="newPassword" class="form-input" placeholder="Enter password">
+
+        <label for="isAdminCheckbox" class="form-checkbox">
+            <input type="checkbox" id="isAdminCheckbox"> isAdmin
+        </label>
+
+        <div class="form-buttons">
+            <button class="form-btn add-btn" onclick="addUser()">Add User</button>
+            <button class="form-btn close-btn" onclick="closeAddUserModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function updateUser(userId) {
+        const username = document.querySelector('#username-' + userId).value
+        const password = document.querySelector('#password-' + userId).value
+        const isAdmin = document.querySelector('#isAdmin-' + userId).checked
+        console.log(username)
+        console.log(password)
+        console.log(isAdmin)
+        const body = {
+            username,
+            password,
+            isAdmin
+        }
+
+        const response = await fetch('/users/' + userId, {
+            method: 'PUT', body: JSON.stringify(body), headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const data = await response.json();
+        if (data.success) {
+            window.location.reload();
+        }
+    }
+
+    async function deleteUser(userId) {
+        const response = await fetch('/users/' + userId, {method: 'DELETE'})
+        const data = await response.json();
+        if (data.success) {
+            window.location.reload();
+        }
+    }
+
+
+    function showAddUserModal() {
+        const modal = document.getElementById('addUserModal');
+        modal.style.display = 'flex';
+    }
+
+    function closeAddUserModal() {
+        const modal = document.getElementById('addUserModal');
+        modal.style.display = 'none';
+    }
+
+
+    async function addUser() {
+        const newUsername = document.getElementById('newUsername').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const isAdmin = document.getElementById('isAdminCheckbox').checked;
+
+        const newUser = {
+            username: newUsername,
+            password: newPassword,
+            isAdmin: isAdmin
+        };
+
+        try {
+            const response = await fetch('/users/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                console.log('User added successfully');
+                window.location.reload();
+            } else {
+                console.error('Failed to add user:', data.error);
+            }
+            closeAddUserModal();
+        } catch (error) {
+            console.error('Error:', error);
+            closeAddUserModal();
+        }
+    }
+</script>
+</body>
+</html>

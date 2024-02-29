@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Information</title>
+   
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("https://cdn.pixabay.com/photo/2023/08/27/00/08/cycling-8215968_640.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .car-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .car-info p {
+            margin: 5px 0;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar a.active {
+            background-color: #007bff;
+        }
+
+        .navbar a.right {
+            float: right;
+        }
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="/main" class="active">Activity</a>
+    <a href="/exercises">Exercises</a>
+    <a href="/items">Items</a>
+    <a href="/logout" class="right">Logout</a>
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+    </script>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</div>
+
+<div class="container">
+    <h1>Activity Information</h1>
+    <% response.forEach(function(item) { %>
+        <div class="car-info">
+            <p><strong>Name:</strong> <%= item.name %></p>
+            <p><strong>calories_per_hour:</strong> <%= item.calories_per_hour %></p>
+            <p><strong>duration_minutes:</strong> <%= item.duration_minutes %></p>
+            <p><strong>total_calories:</strong> <%= item.total_calories %></p>
+        </div>
+    <% }); %>
+    <form action="/activity" method="get">
+        <label for="activity">Fill sport type:</label>
+        <input type="text" id="activity" name="activity">
+        <button type="submit">Search</button>
+    </form>
+</div>
+</body>
+</html>

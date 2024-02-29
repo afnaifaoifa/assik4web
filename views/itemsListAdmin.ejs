@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0;
+
+    }
+        .item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+        .item img {
+        max-width: 100%;
+        height: auto;
+    }
+        .navbar {
+        display: flex;
+        flex-direction: row;
+        background-color: #333;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+        .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+        .navbar a.active {
+        background-color: #007bff;
+        color: white;
+
+    }
+
+        .navbar a.right {
+        float: right;
+    }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="/main" class="text-white">Main</a>
+    <a href="/exercises" class="text-white">Exercise</a>
+    <a href="/items-add-page" class="text-white">Create Items</a>
+    <a href="/items-for-admin" class="text-white">Items</a>
+    <a href="/logout" class="right">Logout</a>
+
+    <div id="google_translate_element"></div>
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+    </script>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</div>
+<h1 class="text-center">Items</h1>
+<div class="container">
+    <div class="row">
+        <% items.forEach(item => { %>
+            <div class="col-md-4">
+                <div class="item">
+                    <% item.pictures.forEach(picture => { %>
+                        <img src="<%= picture %>" class="img-fluid mb-2" alt="Item Image">
+                    <% }) %>
+                    <% item.names.forEach(name => { %>
+                        <h2><%= name.name %></h2>
+                    <% }) %>
+                    <% item.descriptions.forEach(description => { %>
+                        <p><%= description.description %></p>
+                    <% }) %>
+                    <p>Created: <%= item.createdAt %></p>
+                    <p>Updated: <%= item.updatedAt %></p>
+                    <form action="/delete-item/<%= item._id %>" method="POST">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+</body>
+</html>
