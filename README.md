@@ -1,56 +1,48 @@
-# Assik-3
+Project Description:
+. Assik-3 is a Node.js web application enhanced and modified for Assignment 4. It is built with Express.js and MongoDB, providing extended functionalities including user authentication, authorization, REST API integration, and responsive design elements with EJS.
 
-## Project Description
-Assik-3 is a Node.js web application built with Express.js and MongoDB. It provides a platform for users to register, log in, and access news and facts. Additionally, it includes an admin panel for managing users and their permissions.
+Installation and Setup:
+. 1. Clone the repository to your local machine: git clone <repository_url>
+. 2. Navigate to the project directory: cd activity-tracker
+. 3. Install dependencies using npm: npm install
+. 4. Start the application: node app.js
+. 5. Access the application in your web browser at http://localhost:3000
 
-## Installation and Setup
-1. Clone the repository to your local machine:
-git clone <repository_url>
+Technologies Used:
+. - Node.js
+. - bcrypt
+. - Express.js
+. - MongoDB
+. - EJS (Embedded JavaScript) for templating
+. - Express-session for session management
+. - Body-parser for parsing request bodies
 
-2. Navigate to the project directory:
-cd assik-3
+Project Structure:
+. - app.js: Main application file containing server configuration and startup logic.
+. - controllers/: Directory containing controllers for handling different routes and logic.
+. - models/: Directory containing MongoDB schema definitions.
+. - views/: Directory containing EJS view templates for rendering HTML pages.
+. - public/: Directory for static files such as CSS stylesheets and client-side JavaScript.
 
-3. Install dependencies using npm:
-npm install
-npm i express mongoose dotenv
-npm install axios
+Usage:
+. 1. Upon opening the application, users are redirected to the login page.
+. 2. Users can sign up for a new account or log in with existing credentials.
+. 3. Once logged in, users can view their activity information on the main page.
+. 4. Users can also access exercise-related information and manage their profile.
+. 5. Administrators have access to additional functionalities such as user management and item administration.
 
+Authentication and Authorization:
+. - User Registration: Users can sign up by providing a username and password.
+. - User Login: Existing users can log in securely with their credentials.
+. - Authentication Middleware: Routes requiring authentication are protected using middleware.
+. - Authorization: Administrators have access to specific routes for user and item management.
 
-4. Start the application:
-  node app.js
+REST API Functionality:
+. - CRUD Operations: Users can add, edit, and delete items related to activity and exercise.
 
+Deployment:
+. The project is deployed and accessible at https://assik4web.onrender.com
 
-5. Access the application in your web browser at `http://localhost:3000`.
-
-## Technologies Used
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- HTML
-- CSS
-- JavaScript
-
-## Project Structure
-- **app.js**: Main application file containing server configuration and startup logic.
-- **views/**: Directory containing EJS view templates for rendering HTML pages.
-- **public/**: Directory for static files such as CSS stylesheets, images, and client-side JavaScript.
-- **models/**: Directory containing MongoDB schema definitions.
-- **routes/**: Directory containing route files defining request handlers for different URL paths.
-
-6. Open your web browser and navigate to `http://localhost:3000` to view the application.
-
-## Usage
-
-- Upon opening the application, you'll see a list of car-related news articles fetched from the News API.
-- You can use the search input field to search for specific types of car news by entering keywords such as "cars", "automobile", "tesla", etc.
-- Press the "Search" button to see the filtered news articles based on your search query.
-## Contributions
-Contributions and improvements are welcome! Feel free to submit pull requests or open issues to discuss new features, bug fixes, or enhancements for the project.
-
-##
-https://shakhzod-guprakhunov.onrender.com   deploy
-
-admin 
-login : Shakhzod
-password:1234
+Password Information
+. Admin username: Shakhzod
+Admin password: 1234
