@@ -134,6 +134,30 @@ app.post('/delete-item/:id', async (req, res) => {
 });
 
 
+
+// POST route for updating an item
+app.post('/update-item/:id', async (req, res) => {
+    const { id } = req.params;
+    const { itemName, itemDescription, itemImage } = req.body;
+    try {
+        const updatedItem = await Item.findByIdAndUpdate(id, {
+            $set: {
+                'names.0.name': itemName,
+                'descriptions.0.description': itemDescription,
+                'pictures.0': itemImage
+            }
+        }, { new: true });
+        // Redirect to a different page after successful update
+        res.redirect('/items-for-admin');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating item');
+    }
+});
+
+
+
+
 function authMiddleware(req, res, next) {
     // Check if the token exists in the session
     if (req.session && req.session.token) {

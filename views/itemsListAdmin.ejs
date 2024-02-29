@@ -1,59 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        padding: 0;
-
-    }
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 0;
+        }
         .item {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
         .item img {
-        max-width: 100%;
-        height: auto;
-    }
+            max-width: 100%;
+            height: auto;
+        }
         .navbar {
-        display: flex;
-        flex-direction: row;
-        background-color: #333;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-
+            display: flex;
+            flex-direction: row;
+            background-color: #333;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
         .navbar a {
-        float: left;
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 20px;
-        text-decoration: none;
-    }
-
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
         .navbar a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
+            background-color: #ddd;
+            color: black;
+        }
         .navbar a.active {
-        background-color: #007bff;
-        color: white;
-
-    }
-
+            background-color: #007bff;
+            color: white;
+        }
         .navbar a.right {
-        float: right;
-    }
+            float: right;
+        }
     </style>
 </head>
 <body>
@@ -67,9 +61,9 @@
     <div id="google_translate_element"></div>
 
     <script type="text/javascript">
-    function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
     </script>
 
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -91,6 +85,19 @@
                     <% }) %>
                     <p>Created: <%= item.createdAt %></p>
                     <p>Updated: <%= item.updatedAt %></p>
+                    <!-- Button to toggle update form -->
+                    <button class="btn btn-primary update-btn">Update</button>
+                    <!-- Update form -->
+                    <form action="/update-item/<%= item._id %>" method="POST" class="update-form" style="display: none;">
+                        <label for="itemName">Name:</label>
+                        <input type="text" id="itemName" name="itemName" value="<%= item.names[0].name %>"><br>
+                        <label for="itemDescription">Description:</label>
+                        <textarea id="itemDescription" name="itemDescription"><%= item.descriptions[0].description %></textarea><br>
+                        <label for="itemImage">Image URL:</label>
+                        <input type="text" id="itemImage" name="itemImage" value="<%= item.pictures[0] %>"><br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <!-- Delete form -->
                     <form action="/delete-item/<%= item._id %>" method="POST">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
@@ -99,5 +106,20 @@
         <% }) %>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const updateButtons = document.querySelectorAll('.update-btn');
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const updateForm = button.parentElement.querySelector('.update-form');
+                if (updateForm) {
+                    updateForm.style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
