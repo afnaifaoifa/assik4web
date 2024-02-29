@@ -46,3 +46,25 @@ Deployment:
 Password Information
 . Admin username: Shakhzod
 Admin password: 1234
+
+
+database of api key:
+
+muscle (optional) - muscle group targeted by the exercise. Possible values are:
+. exercise
+abdominals
+abductors
+adductors
+biceps
+calves
+chest
+forearms
+glutes
+hamstrings
+lats
+lower_back
+middle_back
+neck
+quadriceps
+traps
+triceps
