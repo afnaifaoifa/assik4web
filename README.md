@@ -49,9 +49,7 @@ Admin password: 1234
 
 
 database of api key:
-
-muscle (optional) - muscle group targeted by the exercise. Possible values are:
-. exercise
+. muscle (optional) - muscle group targeted by the exercise. Possible values are:
 abdominals
 abductors
 adductors
