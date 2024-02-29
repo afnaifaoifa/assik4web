@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        /* CSS стили могут быть размещены здесь */
+        .quiz-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .question {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .answer-field {
+            padding: 5px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 400px;
+            font-size: 16px;
+        }
+        .btn-container {
+            margin-top: 20px;
+        }
+        .share-btn {
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn {
+            padding: 10px 30px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .timer {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Title</h1>
+        <div class="timer">Time Left: <span id="timer">10:00</span></div>
+        
+        <!-- Question 1 -->
+        <div class="question">Question 1: What is 2 + 2?</div>
+        <input type="text" id="answer1" class="answer-field">
+        
+        <!-- Question 2 -->
+        <div class="question">Question 2: What is the capital of France?</div>
+        <input type="text" id="answer2" class="answer-field">
+        
+        <!-- Question 3 -->
+        <div class="question">Question 3: Who wrote "Romeo and Juliet"?</div>
+        <input type="text" id="answer3" class="answer-field">
+        
+        <!-- Question 4 -->
+        <div class="question">Question 4: What is the chemical symbol for water?</div>
+        <input type="text" id="answer4" class="answer-field">
+        
+        <!-- Question 5 -->
+        <div class="question">Question 5: Who discovered penicillin?</div>
+        <input type="text" id="answer5" class="answer-field">
+        
+        <div class="btn-container">
+            <button class="share-btn" onclick="shareOnFacebook()">Share on Facebook</button>
+            <button class="share-btn" onclick="shareOnTwitter()">Share on Twitter</button>
+            <button class="share-btn" onclick="shareOnLinkedIn()">Share on LinkedIn</button>
+            <button class="invite-btn" onclick="inviteFriends()">Invite Friends</button>
+            <button class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+        </div>
+        <div id="dynamic-content"></div>
+    </div>
+
+    <script>
+        // Countdown timer
+        let timerElement = document.getElementById('timer');
+        let totalTime = 300; // 10 minutes in seconds
+
+        function startTimer() {
+            let timer = setInterval(function() {
+                let minutes = Math.floor(totalTime / 60);
+                let seconds = totalTime % 60;
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                totalTime--;
+
+                if (totalTime < 0) {
+                    clearInterval(timer);
+                    timerElement.textContent = "Time's up!";
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        startTimer();
+
+        // Share functions
+        function shareOnFacebook() {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=https://example.com/quiz', '_blank');
+        }
+
+        function shareOnTwitter() {
+            window.open('https://twitter.com/intent/tweet?url=https://example.com/quiz&text=Check%20out%20this%20quiz!', '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://example.com/quiz', '_blank');
+        }
+
+        // Invite friends function
+        function inviteFriends() {
+            // Add logic to invite friends
+            alert("Inviting friends...");
+        }
+
+        // Submit quiz function
+        function submitQuiz() {
+            // Collect answers from input fields
+            const answer1 = document.getElementById('answer1').value;
+            // Repeat for other answers
+            
+            // Prepare data to send to the server
+            const formData = {
+                question: 'Question 1', // Example question text
+                answer: answer1 // Example answer
+            };
+
+            // Send the data to the server
+            fetch('/submit_quiz_answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Error submitting quiz');
+                }
+            })
+            .then(data => {
+                console.log(data); // Print response from server
+                alert('Quiz submitted successfully!');
+                // Optionally, you can redirect or perform other actions here
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Error submitting quiz');
+            });
+        }
+    </script>
+</body>
+</html>

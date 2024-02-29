@@ -5,12 +5,10 @@ const authController = require('./controllers/authController');
 const activityController = require('./controllers/activityController');
 const exercisesController = require('./controllers/exercisesController');
 const userController = require('./controllers/userController');
-const User = require('./models/user');
 const mongoose = require('mongoose');
-const Item = require('./models/item');
+const User = require('./models/user');
+const Quiz = require('./models/quiz');
 const app = express();
-
-
 
 // Connect to MongoDB Atlas
 mongoose.connect('mongodb+srv://exclusiveshahzod:zh0YsqKsMMMJ2HCM@cluster0.p7nhdnz.mongodb.net/mydatabase')
@@ -50,6 +48,10 @@ app.get('/main',authMiddleware, activityController.getInfo);
 
 app.get('/activity',authMiddleware, activityController.getInfo);
 
+app.get('/quiz', (req, res) => {
+    res.render('quiz'); 
+});
+
 
 app.post('/login', authController.login);
 
@@ -79,8 +81,6 @@ app.get('/admin',authMiddleware, async (req, res) => {
 app.post('/users/create',authMiddleware, userController.createUser);
 app.delete('/users/:userId',authMiddleware, userController.deleteUser);
 app.put('/users/:userId', authMiddleware,userController.updateUser);
-
-
 
 // POST route for adding a new item
 app.post('/add-item', async (req, res) => {
@@ -133,8 +133,6 @@ app.post('/delete-item/:id', async (req, res) => {
     }
 });
 
-
-
 // POST route for updating an item
 app.post('/update-item/:id', async (req, res) => {
     const { id } = req.params;
@@ -155,8 +153,72 @@ app.post('/update-item/:id', async (req, res) => {
     }
 });
 
+// Endpoint to add a new quiz question
+app.post('/api/questions', async (req, res) => {
+    const { question, answer } = req.body;
+    try {
+        const newQuestion = new Quiz({
+            question: question,
+            answer: answer
+        });
+        await newQuestion.save();
+        res.status(201).json(newQuestion);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ message: err.message });
+    }
+});
 
+// Endpoint to update a quiz question
+app.put('/api/questions/:id', async (req, res) => {
+    const { id } = req.params;
+    const { question, answer } = req.body;
+    try {
+        const updatedQuestion = await Quiz.findByIdAndUpdate(id, {
+            question: question,
+            answer: answer
+        }, { new: true });
+        res.json(updatedQuestion);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ message: err.message });
+    }
+});
 
+// Endpoint to delete a quiz question
+app.delete('/api/questions/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Quiz.findByIdAndDelete(id);
+        res.json({ message: 'Question deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to delete question' });
+    }
+});
+// Обработчик POST запроса для отправки ответа квиза в базу данных
+app.post('/submit_quiz_answer', async (req, res) => {
+    try {
+      // Получаем данные из тела запроса
+      const { question, answer } = req.body;
+  
+      // Создаем новую запись квиза в базе данных
+      const newQuiz = new Quiz({
+        question,
+        answer
+      });
+  
+      // Сохраняем запись квиза в базу данных
+      await newQuiz.save();
+  
+      // После успешного сохранения ответа, перенаправляем на ту же страницу (например, страницу квиза)
+      res.redirect('/quiz');
+    } catch (error) {
+      // Если произошла ошибка, возвращаем статус 500 и сообщение об ошибке
+      console.error(error);
+      res.status(500).send('Произошла ошибка при сохранении ответа на квиз.');
+    }
+});
 
 function authMiddleware(req, res, next) {
     // Check if the token exists in the session
@@ -168,6 +230,5 @@ function authMiddleware(req, res, next) {
         res.redirect('/login')// Respond with 401 Unauthorized
     }
 }
-
 
 app.listen(3000, () => console.log('Server started on port 3000'));
