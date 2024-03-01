@@ -123,7 +123,7 @@
             <p><strong>total_calories:</strong> <%= item.total_calories %></p>
         </div>
     <% }); %>
-    <form action="/activity" method="get">
+    <form action="/activity" method="post"> <!-- Changed method to POST -->
         <label for="activity">Fill sport type:</label>
         <input type="text" id="activity" name="activity">
         <button type="submit">Search</button>

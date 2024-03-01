@@ -8,13 +8,16 @@ const userController = require('./controllers/userController');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const Quiz = require('./models/quiz');
+const Item = require('./models/item');
 const app = express();
+const SearchHistory = require('./models/searchHistory');
 
 // Connect to MongoDB Atlas
 mongoose.connect('mongodb+srv://exclusiveshahzod:zh0YsqKsMMMJ2HCM@cluster0.p7nhdnz.mongodb.net/mydatabase')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
+  
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -47,6 +50,27 @@ app.get('/signup', (req, res) => {
 app.get('/main',authMiddleware, activityController.getInfo);
 
 app.get('/activity',authMiddleware, activityController.getInfo);
+
+
+app.post('/activity', async (req, res) => {
+    try {
+        // Extract the search query from the request body
+        const { activity } = req.body;
+
+        // Create a new instance of SearchHistory model
+        const searchHistory = new SearchHistory({ activity });
+
+        // Save the search history to the database
+        await searchHistory.save();
+
+        // Redirect to the main page after submission
+        res.redirect('/main');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 app.get('/quiz', (req, res) => {
     res.render('quiz'); 
@@ -111,7 +135,7 @@ app.get('/items', async (req, res) => {
 });
 
 app.get('/items-add-page', (req, res) => {
-    res.render('ItemAdd');
+    res.render('ItemAdd');  
 })
 app.get('/items-for-admin', async (req, res) => {
     try {
